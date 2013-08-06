@@ -50,7 +50,7 @@ public class MSTestTransformer implements FilePath.FileCallable<Boolean>, Serial
         String[] mstestFiles = findMSTestReports(ws);
 
         if (mstestFiles.length == 0 && !ignoreNoFileError) {
-            listener.fatalError("No MSTest TRX test report files were found. Configuration error?");
+            listener.fatalError("No MSTest TRX test report files were found. Configuration error?" + ignoreNoFileError);
             return Boolean.FALSE;
         }
 

@@ -3,7 +3,7 @@
 		This jelly script is used for per-project configuration.
 	-->
 	<f:entry title="Ignore publish if no TRX file">
-		<f:checkbox name="mstest_no.file.ignore" value="true" checked="${instance.testResultsIgnoreIfNoFile}"/>
+		<f:checkbox name="mstest_no_file_ignore" value="true" checked="${instance.testResultsIgnoreIfNoFile}"/>
 	</f:entry>
 	<f:entry title="${%Test report TRX file}" description="${%description.pattern}">
     	<f:textbox name="mstest_reports.pattern" value="${instance.testResultsTrxFile}" />

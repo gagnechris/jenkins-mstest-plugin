@@ -113,6 +113,7 @@ public class MSTestPublisher extends Recorder implements Serializable {
                 existingTestResults = existingAction.getResult();
             }
             TestResult result = getTestResult(junitFilePattern, build, existingTestResults, buildTime);
+            if (result==null && testResultsIgnoreIfNoFile) return true;
 
             if (existingAction == null) {
                 action = new TestResultAction(build, result, listener);
@@ -162,8 +163,10 @@ public class MSTestPublisher extends Recorder implements Serializable {
 
                 String[] files = ds.getIncludedFiles();
                 if(files.length==0) {
-                    // no test result. Most likely a configuration error or fatal problem
-                    throw new AbortException("No test report files were found. Configuration error?");
+                    if (!testResultsIgnoreIfNoFile)
+                        throw new AbortException("No test report files were found. Configuration error?");
+                    else
+                        return null;
                 }
                 if (existingTestResults == null) {
                     return new TestResult(buildTime, ds);
@@ -205,7 +208,7 @@ public class MSTestPublisher extends Recorder implements Serializable {
 
         @Override
         public Publisher newInstance(StaplerRequest req, JSONObject formData) throws FormException {
-            return new MSTestPublisher(req.getParameter("mstest_reports.pattern"), req.getParameter("mstest_no.file.ignore") != null);
+            return new MSTestPublisher(req.getParameter("mstest_reports.pattern"), Boolean.parseBoolean(req.getParameter("mstest_no_file_ignore")));
         }
     }
 }
